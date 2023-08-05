@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Code Converter</title>
+    <style>body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+textarea {
+    width: 100%;
+    resize: vertical;
+}
+
+select {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #FFF;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+h2 {
+    margin-top: 30px;
+}
+
+pre {
+    font-family: monospace;
+    white-space: pre-wrap;
+    background-color: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+}
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Code Converter</h1>
+        <label for="sourceCode">Enter JavaScript Code:</label><br>
+        <textarea id="sourceCode" rows="10" cols="80"></textarea><br>
+
+        <label for="targetLanguage">Select Target Language:</label>
+        <select id="targetLanguage">
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <!-- Add more options for other supported languages -->
+        </select><br>
+
+        <button onclick="convertCode()">Convert</button><br>
+
+        <h2>Converted Code:</h2>
+        <pre id="convertedCode"></pre>
+    </div>
+
+    <script>  function convertCode() {
+    const sourceCode = document.getElementById('sourceCode').value;
+    const targetLanguage = document.getElementById('targetLanguage').value;
+
+    const requestBody = {
+        sourceCode: sourceCode,
+        targetLanguage: targetLanguage,
+    };
+
+    fetch('/convert', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+    })
+        .then(response => response.json())
+        .then(data => {
+            const convertedCodeElement = document.getElementById('convertedCode');
+            convertedCodeElement.textContent = data.convertedCode;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+</script>
+</body>
+
+</html>
+
